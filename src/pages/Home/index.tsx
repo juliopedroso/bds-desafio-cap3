@@ -1,6 +1,8 @@
+import Login from "./Login";
+
 const Home = () => {
     return (
-        <h1>MovieFlix - Homepage</h1>
+        <Login/>
     );
 };
 
