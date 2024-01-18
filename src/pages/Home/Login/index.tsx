@@ -22,7 +22,10 @@ const Login = () => {
                     />
                 </div>
                 <div className="login-submit">
-                    <button>Fazer login</button>
+                    <button className="btn btn-primary">
+                        <h6>Fazer login</h6>
+                    </button>
+
                 </div>
             </form>
         </div>
