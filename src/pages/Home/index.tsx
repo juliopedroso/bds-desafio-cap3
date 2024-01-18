@@ -1,5 +1,6 @@
 import { ReactComponent as MainImage } from 'assets/images/main-image.svg'
 import Login from "./Login";
+import './styles.css';
 
 const Home = () => {
     return (
