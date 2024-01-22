@@ -13,7 +13,7 @@ const Login = () => {
                         name="username"
                     />
                 </div>
-                <div className="mb-2">
+                <div className="mb-4">
                     <input
                         type="password"
                         className="form-control base-input "
