@@ -11,9 +11,7 @@
 }
 
 @media (min-width: 576px) {
-  .home-container{
-    padding: 50px;
-  }
+
   .home-form-container {
     width: 480px;
   }

@@ -22,7 +22,7 @@ const Login = () => {
                     />
                 </div>
                 <div className="login-submit">
-                    <button className="btn btn-primary">
+                    <button className="btn btn-warning">
                         <h6>Fazer login</h6>
                     </button>
 
