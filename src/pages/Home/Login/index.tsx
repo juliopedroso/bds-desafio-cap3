@@ -1,7 +1,8 @@
 import { useForm } from 'react-hook-form';
 import './styles.css';
-import { requestBackendLogin } from 'util/request';
+import { requestBackendLogin, saveAuthData } from 'util/request';
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 type FormData = {
     username: string;
@@ -14,22 +15,30 @@ const Login = () => {
 
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
+    const history = useHistory();
+
     const onSubmit = (formData: FormData) => {
         requestBackendLogin(formData)
             .then(response => {
+                saveAuthData(response.data);
                 setHasError(false);
-                console.log('Sucesso', response);
+                history.push('/movies')
             })
             .catch(error => {
                 setHasError(true);
                 console.log('error', error);
+                history.push('/')
             })
     };
 
     return (
         <div className="base-card login-card">
             <h1>LOGIN</h1>
-
+            {hasError &&
+                (<div className="alert alert-danger">
+                    Erro ao tentar efetuar o login
+                </div>)
+            }
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-4">
                     <input
