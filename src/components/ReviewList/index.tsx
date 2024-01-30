@@ -2,15 +2,21 @@ import ReviewCard from "components/ReviewCard";
 import './styles.css';
 const ReviewList = () => {
     return (
-        <>
-            <h1>Form de review</h1>
 
+        <div className="base-card review-list-container">
+        
+        
             <ReviewCard />
             <ReviewCard />
             <ReviewCard />
             <ReviewCard />
             <ReviewCard />
-        </>
+
+        </div>
+            
+
+
+
     );
 }
 

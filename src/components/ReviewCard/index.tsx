@@ -3,7 +3,7 @@ import './styles.css';
 import {ReactComponent as Star} from 'assets/images/star.svg'
 const ReviewCard = () => {
     return (
-        <div className="base-card review-card">
+        <div className="review-card">
             <div className="card-top-container">
                 <Star/> 
                 <h2>Maria Silva</h2>
