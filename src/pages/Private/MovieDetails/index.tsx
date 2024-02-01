@@ -34,7 +34,7 @@ const MovieDetails = () => {
   return (
     <div className="container movie-details-container">
       <h1>Tela detalhes do filme id: {movieId}</h1>
-      <ReviewForm />
+      <ReviewForm movieId={movieId} />
       <ReviewList reviews={reviews} />
     </div>
 

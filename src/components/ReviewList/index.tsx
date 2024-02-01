@@ -10,7 +10,7 @@ const ReviewList = ({ reviews }: Props) => {
 
         <div className="base-card review-list-container">
             {reviews.map((review) => (
-            <ReviewCard review={review} />    
+                <ReviewCard key={review.id} review={review} />    
             ))}
         </div>
 
