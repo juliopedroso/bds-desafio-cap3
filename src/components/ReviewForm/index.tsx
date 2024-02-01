@@ -1,5 +1,8 @@
 import { useForm } from 'react-hook-form';
 import './styles.css';
+import { AxiosRequestConfig } from 'axios';
+import { requestBackend } from 'util/request';
+import { useState } from 'react';
 
 type Props = {
     movieId: string;
@@ -13,12 +16,27 @@ type FormData = {
 
 const ReviewForm = ({ movieId }: Props) => {
 
-    const { register, handleSubmit, formState: { errors }  } = useForm<FormData>();
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
+
+    const [hasError, setHasError] = useState(false);
 
     const onSubmit = (formData: FormData) => {
         formData.movieId = parseInt(movieId);
-        console.log(formData);
 
+        const config: AxiosRequestConfig = {
+            method: 'POST',
+            url: '/reviews',
+            data: formData,
+            withCredentials: true
+        }
+
+        requestBackend(config).then(response => {
+            setHasError(false);
+            console.log("Sucesso ao salvar", response);
+        }).catch(error => {
+            setHasError(true);
+            console.log("Erro ao salvar review", error);
+        })
     }
 
     return (
@@ -38,6 +56,11 @@ const ReviewForm = ({ movieId }: Props) => {
                     <div className="invalid-feedback d-block">
                         {errors.text?.message}
                     </div>
+                    {hasError &&
+                        (<div className="alert alert-danger">
+                            Erro ao tentar salvar review
+                        </div>)
+                    }
                 </div>
                 <div className="review-submit">
                     <button type="submit" className="btn btn-warning">
@@ -46,7 +69,6 @@ const ReviewForm = ({ movieId }: Props) => {
                 </div>
             </form>
         </div>
-
     )
 };
 export default ReviewForm;
