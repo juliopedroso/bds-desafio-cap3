@@ -1,7 +1,15 @@
 import axios, { AxiosRequestConfig } from "axios";
+import jwtDecode from "jwt-decode";
 
 import qs from "qs";
 
+type Role = 'ROLE_MEMBER'
+
+export type TokenData = {
+    exp: number,
+    user_name: string,
+    authorities: Role
+}
 
 type LoginData = {
     username: string;
@@ -54,4 +62,15 @@ export const requestBackend = (config: AxiosRequestConfig) => {
         Authorization: "Bearer " + getAuthData().access_token
     } : config.headers;
     return axios({ ...config, baseURL: BASE_URL, headers });
+}
+export const getTokenData = (): TokenData | undefined => {
+    try {
+        return jwtDecode(getAuthData().access_token);
+    } catch (error) {
+        return undefined;
+    }
+};
+export const isAuthenticated = (): boolean => {
+    const tokenData = getTokenData();
+    return !!((tokenData && tokenData.exp * 1000 > Date.now()));
 }
