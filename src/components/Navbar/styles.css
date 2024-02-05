@@ -7,6 +7,14 @@
   font-size: 24px;
 }
 
+.nav-logout{
+  border: 1px solid #000 ;
+  border-radius: 10px;
+  width: 100px;
+  height: 40px;
+  font-weight: 700;
+}
+
 @media (min-width: 576px) {
   .main-nav {
     padding-left: 14px;
