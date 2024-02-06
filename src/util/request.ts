@@ -1,34 +1,15 @@
 import axios, { AxiosRequestConfig } from "axios";
-import jwtDecode from "jwt-decode";
 
 import qs from "qs";
-
-type Role = 'ROLE_MEMBER'
-
-export type TokenData = {
-    exp: number,
-    user_name: string,
-    authorities: Role
-}
+import { getAuthData } from "./storage";
 
 type LoginData = {
     username: string;
     password: string;
 }
 
-type LoginResponse = {
-    access_token: string;
-    token_type: string;
-    expires_in: number;
-    scope: string;
-    userFirstName: string;
-    userId: number;
-}
-
-
 export const BASE_URL = process.env.REACT_APP_BACKEND_URL ?? 'https://movieflix-devsuperior.herokuapp.com';
 
-const tokenKey = 'authData';
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID ?? 'myclientid';
 const CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET ?? 'myclientsecret';
 
@@ -47,34 +28,10 @@ export const requestBackendLogin = (loginData: LoginData) => {
     return axios({ method: 'POST', baseURL: BASE_URL, url: '/oauth/token', data, headers })
 }
 
-export const saveAuthData = (obj: LoginResponse) => {
-    localStorage.setItem(tokenKey, JSON.stringify(obj));
-}
-
-export const getAuthData = () => {
-    const str = localStorage.getItem(tokenKey) ?? "{}";
-    return JSON.parse(str) as LoginResponse;
-}
-
-export const removeAuthData = () => {
-    localStorage.removeItem(tokenKey);
-}
-
 export const requestBackend = (config: AxiosRequestConfig) => {
     const headers = config.withCredentials ? {
         ...config.headers,
         Authorization: "Bearer " + getAuthData().access_token
     } : config.headers;
     return axios({ ...config, baseURL: BASE_URL, headers });
-}
-export const getTokenData = (): TokenData | undefined => {
-    try {
-        return jwtDecode(getAuthData().access_token);
-    } catch (error) {
-        return undefined;
-    }
-};
-export const isAuthenticated = (): boolean => {
-    const tokenData = getTokenData();
-    return !!((tokenData && tokenData.exp * 1000 > Date.now()));
 }

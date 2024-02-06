@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { AxiosRequestConfig } from "axios";
 import { requestBackend } from "util/request";
 import { Review } from "types/review";
+import { hasAnyRoles } from "util/auth";
 
 type urlParams = {
   movieId: string;
@@ -34,7 +35,9 @@ const MovieDetails = () => {
   return (
     <div className="container movie-details-container">
       <h1>Tela detalhes do filme id: {movieId}</h1>
-      <ReviewForm movieId={movieId} />
+      {hasAnyRoles(['ROLE_MEMBER']) && (
+        <ReviewForm movieId={movieId} />
+      )}
       <ReviewList reviews={reviews} />
     </div>
 

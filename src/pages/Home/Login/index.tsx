@@ -1,9 +1,11 @@
 import { useForm } from 'react-hook-form';
 import './styles.css';
-import { getTokenData, isAuthenticated, requestBackendLogin, saveAuthData } from 'util/request';
+import { requestBackendLogin } from 'util/request';
 import { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { AuthContext } from 'AuthContext';
+import { saveAuthData } from 'util/storage';
+import { getTokenData, isAuthenticated } from 'util/auth';
 
 type FormData = {
     username: string;
@@ -11,7 +13,7 @@ type FormData = {
 }
 
 const Login = () => {
-    
+
     const { setAuthContextData } = useContext(AuthContext);
 
     const [hasError, setHasError] = useState(false);
@@ -28,7 +30,7 @@ const Login = () => {
                 setAuthContextData({
                     authenticated: isAuthenticated(),
                     tokenData: getTokenData()
-                  });
+                });
                 history.push('/movies')
             })
             .catch(error => {
@@ -76,7 +78,7 @@ const Login = () => {
                     <div className="invalid-feedback d-block">{errors.password?.message}</div>
                 </div>
                 <div className="login-submit">
-                    <button  type="submit"  className="btn btn-warning">
+                    <button type="submit" className="btn btn-warning">
                         <h6>Fazer login</h6>
                     </button>
 

@@ -1,8 +1,9 @@
 import { useContext, useEffect } from 'react';
 import './styles.css';
 import { AuthContext } from 'AuthContext';
-import { getTokenData, isAuthenticated, removeAuthData } from 'util/request';
 import { useHistory } from 'react-router-dom';
+import { getTokenData, isAuthenticated } from 'util/auth';
+import { removeAuthData } from 'util/storage';
 
 const Navbar = () => {
 
