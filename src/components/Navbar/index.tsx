@@ -1,8 +1,34 @@
+import { useContext, useEffect } from 'react';
 import './styles.css';
+import { AuthContext } from 'AuthContext';
+import { getTokenData, isAuthenticated, removeAuthData } from 'util/request';
+import { useHistory } from 'react-router-dom';
 
 const Navbar = () => {
+
+    const { authContextData, setAuthContextData } = useContext(AuthContext);
+    const history = useHistory();
+    useEffect(() => {
+        if (isAuthenticated()) {
+            setAuthContextData({
+                authenticated: isAuthenticated(),
+                tokenData: getTokenData()
+            })
+        }
+        else {
+            setAuthContextData({
+                authenticated: false
+            })
+        }
+    }, [setAuthContextData]);
+
     const handleLogoutClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
         event.preventDefault();
+        removeAuthData();
+        setAuthContextData({
+            authenticated: false
+        });
+        history.replace('/');
     }
 
     return (
@@ -11,14 +37,21 @@ const Navbar = () => {
                 <div className="nav-logo-text">
                     <h4>MovieFlix</h4>
                 </div>
-                <div className='btn nav-logout'>
-                    <a href='#logout' onClick={handleLogoutClick}>
-                        SAIR
-                    </a>
-                </div>
+                {authContextData.authenticated ? (
+                    <div className='btn nav-logout'>
+                        <a href='#logout' onClick={handleLogoutClick}>
+                            SAIR
+                        </a>
+                    </div>
+                ) : (
+                    <div />
+                )
+                }
             </div>
         </nav>
     );
 }
 
 export default Navbar;
+
+

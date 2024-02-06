@@ -1,8 +1,9 @@
 import { useForm } from 'react-hook-form';
 import './styles.css';
-import { requestBackendLogin, saveAuthData } from 'util/request';
-import { useState } from 'react';
+import { getTokenData, isAuthenticated, requestBackendLogin, saveAuthData } from 'util/request';
+import { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { AuthContext } from 'AuthContext';
 
 type FormData = {
     username: string;
@@ -10,6 +11,8 @@ type FormData = {
 }
 
 const Login = () => {
+    
+    const { setAuthContextData } = useContext(AuthContext);
 
     const [hasError, setHasError] = useState(false);
 
@@ -22,6 +25,10 @@ const Login = () => {
             .then(response => {
                 saveAuthData(response.data);
                 setHasError(false);
+                setAuthContextData({
+                    authenticated: isAuthenticated(),
+                    tokenData: getTokenData()
+                  });
                 history.push('/movies')
             })
             .catch(error => {
