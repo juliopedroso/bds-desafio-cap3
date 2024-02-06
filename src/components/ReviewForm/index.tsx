@@ -3,9 +3,11 @@ import './styles.css';
 import { AxiosRequestConfig } from 'axios';
 import { requestBackend } from 'util/request';
 import { useState } from 'react';
+import { Review } from 'types/review';
 
 type Props = {
     movieId: string;
+    onInsertReview: (review:Review) => void;
 }
 
 type FormData = {
@@ -14,9 +16,9 @@ type FormData = {
 }
 
 
-const ReviewForm = ({ movieId }: Props) => {
+const ReviewForm = ({ movieId,onInsertReview }: Props) => {
 
-    const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormData>();
 
     const [hasError, setHasError] = useState(false);
 
@@ -32,6 +34,8 @@ const ReviewForm = ({ movieId }: Props) => {
 
         requestBackend(config).then(response => {
             setHasError(false);
+            setValue('text','');
+            onInsertReview(response.data);
             console.log("Sucesso ao salvar", response);
         }).catch(error => {
             setHasError(true);
